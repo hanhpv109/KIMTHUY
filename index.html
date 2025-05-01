@@ -1,0 +1,285 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Giá vàng hôm nay - Cập nhật mới nhất từ Kim Thúy Gold</title>
+  <meta name="description" content="Cập nhật giá vàng hôm nay nhanh nhất từ Kim Thúy - Hải Dương. Xem bảng giá mua vào, bán ra và biểu đồ giá vàng thế giới trực quan.">
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fff8f5;
+      color: #333;
+    }
+    .header-top {
+      background-color: #a60000;
+      color: #f0c14b;
+      font-size: 30px;
+      font-weight: bold;
+      text-align: center;
+      padding: 20px 10px;
+    }
+    .header-bottom {
+      background-color: #fce9db;
+      color: #a60000;
+      font-size: 16px;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .header-bottom .left-info span {
+      margin-right: 20px;
+      font-weight: 500;
+    }
+    .header-bottom .tradingview-widget-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100px;
+    }
+    .header-bottom .tradingview-widget-container img {
+      height: 80px;
+      object-fit: contain;
+      border: 2px solid #d4af37;
+      border-radius: 8px;
+      transition: transform 0.3s ease;
+    }
+    .header-bottom .tradingview-widget-container img:hover {
+      transform: scale(1.05);
+    }
+    .info-top {
+      background-color: #fff;
+      color: #a60000;
+      font-size: 18px;
+      padding: 10px 20px;
+      border-bottom: 1px solid #d4af37;
+    }
+    .main-section {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 0 10px;
+    }
+    .price-board-wrapper {
+      flex: 1 1 65%;
+      min-width: 320px;
+    }
+    .chart-wrapper {
+      flex: 1 1 30%;
+      min-width: 260px;
+    }
+    .price-board {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: 18px;
+      background-color: white;
+    }
+    .price-board th {
+      background-color: #d4af37;
+      color: #a60000;
+      padding: 10px;
+    }
+    .price-board td {
+      border-top: 1px solid #e0e0e0;
+      padding: 12px 8px;
+      color: #333;
+    }
+    .price-board td:first-child {
+      font-weight: bold;
+      color: #a60000;
+    }
+    .price-board tr:hover {
+      background-color: #fff8e1;
+    }
+    .gold-chart iframe {
+      width: 100%;
+      height: 300px;
+      border: 2px solid #d4af37;
+      border-radius: 8px;
+    }
+    .marquee {
+      background-color: #a60000;
+      overflow: hidden;
+      white-space: nowrap;
+      box-sizing: border-box;
+      position: relative;
+      height: 50px;
+    }
+    .marquee-text {
+      display: inline-block;
+      padding-left: 100%;
+      animation: marquee 12s linear infinite;
+      color: #fff;
+      font-size: 22px;
+      font-weight: bold;
+      line-height: 50px;
+    }
+    @keyframes marquee {
+      0% { transform: translateX(0%); }
+      100% { transform: translateX(-100%); }
+    }
+    .footer {
+      background-color: #a60000;
+      color: white;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 20px 40px;
+    }
+    .footer img.logo {
+      height: 120px;
+    }
+    .footer-left, .footer-right {
+      flex: 1 1 45%;
+    }
+    .footer-right {
+      text-align: right;
+    }
+    .social-icons img {
+      border: 2px solid #d4af37;
+      border-radius: 50%;
+      padding: 5px;
+      transition: transform 0.3s ease;
+      width: 32px;
+      margin: 0 5px;
+    }
+    .social-icons img:hover {
+      transform: scale(1.2);
+    }
+    @media (max-width: 768px) {
+      .main-section {
+        flex-direction: column;
+      }
+      .footer {
+        flex-direction: column;
+        text-align: center;
+      }
+      .footer-right {
+        margin-top: 20px;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header-top">DOANH NGHIỆP TƯ NHÂN VÀNG BẠC KIM THÚY - HẢI DƯƠNG</div>
+  <div class="header-bottom">
+    <div class="left-info">
+      <span>Cập nhật lúc: <strong id="datetime">--:--:--</strong></span>
+      <span>Đơn vị tính: VNĐ / lượng</span>
+      <span>Giá vàng Thế giới:</span>
+    </div>
+    <div class="tradingview-widget-container">
+      <img src="https://i.imgur.com/NiE3vWJ.jpeg" alt="Kim Thúy Logo">
+    </div>
+  </div>
+  <div class="info-top">
+    <div><strong>Đơn vị tính:</strong> Nghìn VNĐ/Chỉ</div>
+    <div id="datetime2">--:--:--</div>
+  </div>
+  <div class="main-section">
+    <div class="price-board-wrapper">
+      <table class="price-board">
+        <thead>
+          <tr>
+            <th>LOẠI VÀNG</th>
+            <th>MUA VÀO</th>
+            <th>BÁN RA</th>
+          </tr>
+        </thead>
+        <tbody id="price-table-body"></tbody>
+      </table>
+    </div>
+    <div class="chart-wrapper">
+      <h3 style="text-align:center;color:#a60000;">Biểu đồ giá vàng thế giới</h3>
+      <div class="gold-chart">
+        <div class="tradingview-widget-container">
+          <div id="tradingview_gold_chart"></div>
+          <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+          {
+            "symbol": "OANDA:XAUUSD",
+            "width": "100%",
+            "height": "300",
+            "locale": "vi_VN",
+            "dateRange": "1M",
+            "colorTheme": "light",
+            "isTransparent": false,
+            "autosize": true
+          }
+          </script>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="marquee">
+    <div class="marquee-text">❤️ CHÂN THÀNH CẢM ƠN QUÝ KHÁCH HÀNG ❤️ CHÂN THÀNH CẢM ƠN QUÝ KHÁCH HÀNG ❤️</div>
+  </div>
+  <div class="footer">
+    <div class="footer-left">
+      <img src="https://i.imgur.com/NiE3vWJ.jpeg" alt="logo" class="logo"><br><br>
+    </div>
+    <div class="footer-right">
+      <p><strong>Về Chúng tôi</strong><br>
+        Doanh nghiệp tư nhân vàng bạc Kim Thúy - Hải Dương<br>
+        282 Đường Thanh Niên – TP Hải Dương<br>
+        Hotline: 0962 112 555
+      </p>
+      <p><strong>Hãy Kết nối với chúng tôi</strong><br>
+        <span class="social-icons">
+          <a href="https://www.facebook.com/kimthuygold" target="_blank">
+            <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook">
+          </a>
+          <a href="https://www.tiktok.com/@kimthuygold" target="_blank">
+            <img src="https://giabac.vn/Content/ProductPrice/images/icon/tiktok.png" alt="TikTok">
+          </a>
+          <a href="https://zalo.me/0962112555" target="_blank">
+            <img src="https://giabac.vn/Content/ProductPrice/images/icon/zalo.png" alt="Zalo">
+          </a>
+        </span>
+      </p>
+    </div>
+  </div>
+  <script>
+    function updateTime() {
+      const now = new Date();
+      const time = now.toLocaleTimeString('vi-VN');
+      const date = now.toLocaleDateString('vi-VN');
+      document.getElementById("datetime").innerText = `${time} ${date}`;
+      document.getElementById("datetime2").innerText = `${date} ${time}`;
+    }
+    setInterval(updateTime, 1000);
+    updateTime();
+
+    async function fetchPriceTable() {
+      const sheetId = '1mF6NQWMLHWJiuaNSvK-6AXolrgUuS_QvW3rU45E_g24';
+      const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv`;
+      try {
+        const response = await fetch(url);
+        const data = await response.text();
+        const parsed = Papa.parse(data, { header: false });
+        const rows = parsed.data;
+        rows.shift();
+        const tbody = document.getElementById('price-table-body');
+        tbody.innerHTML = '';
+        for (const row of rows) {
+          if (row.length >= 3) {
+            const [type, buy, sell] = row.map(cell => cell.trim());
+            const tr = document.createElement('tr');
+            tr.innerHTML = `<td>${type}</td><td>${buy}</td><td>${sell}</td>`;
+            tbody.appendChild(tr);
+          }
+        }
+      } catch (error) {
+        console.error('Lỗi khi tải bảng giá:', error);
+      }
+    }
+    fetchPriceTable();
+  </script>
+</body>
+</html>
