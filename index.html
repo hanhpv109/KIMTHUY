@@ -2,168 +2,96 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <title>Giá vàng hôm nay - Cập nhật mới nhất từ Kim Thúy Gold</title>
-  <meta name="description" content="Cập nhật giá vàng hôm nay nhanh nhất từ Kim Thúy - Hải Dương. Xem bảng giá mua vào, bán ra và biểu đồ giá vàng thế giới trực quan.">
+  <title>Giá vàng hôm nay - Kim Thúy Gold</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Cập nhật giá vàng mới nhất từ Kim Thúy - Hải Dương. Bảng giá mua vào, bán ra và biểu đồ giá vàng thế giới trực quan.">
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
   <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #fff8f5;
-      color: #333;
-    }
+    body { margin: 0; font-family: 'Segoe UI', sans-serif; background-color: #fff8f5; color: #333; }
     .header-top {
-      background-color: #a60000;
-      color: #f0c14b;
-      font-size: 30px;
-      font-weight: bold;
-      text-align: center;
-      padding: 20px 10px;
+      background: #a60000; color: #f0c14b;
+      font-size: 30px; font-weight: bold;
+      text-align: center; padding: 20px 10px;
     }
     .header-bottom {
-      background-color: #fce9db;
-      color: #a60000;
-      font-size: 18px;
-      padding: 10px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
+      background: #fce9db;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 6px 20px; gap: 10px;
     }
-    .header-bottom .left-info span {
-      margin-right: 20px;
-      font-weight: 500;
-    }
-    .header-bottom .tradingview-widget-container {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100px;
-    }
-    .header-bottom .tradingview-widget-container img {
-      height: 80px;
-      object-fit: contain;
-      border: 2px solid #d4af37;
-      border-radius: 8px;
-      transition: transform 0.3s ease;
-    }
-    .header-bottom .tradingview-widget-container img:hover {
-      transform: scale(1.05);
+    .header-bottom .left-info { flex: 1; font-size: 20px; color: #a60000; font-weight: 500; }
+    .header-bottom .middle-widget { flex: 1; text-align: center; }
+    .header-bottom .right-map {
+      flex: 1; max-width: 280px; display: flex; flex-direction: column; align-items: center;
     }
     .info-top {
-      background-color: #fff;
-      color: #a60000;
-      font-size: 18px;
-      padding: 10px 20px;
-      border-bottom: 1px solid #d4af37;
+      background: #fff; color: #a60000; font-size: 18px;
+      padding: 10px 20px; border-bottom: 1px solid #d4af37;
+      display: flex; justify-content: flex-start;
     }
     .main-section {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      gap: 20px;
-      padding: 0 10px;
+      display: flex; flex-wrap: wrap;
+      justify-content: space-between; gap: 20px; padding: 0 10px;
     }
-    .price-board-wrapper {
-      flex: 1 1 65%;
-      min-width: 320px;
-    }
-    .chart-wrapper {
-      flex: 1 1 30%;
-      min-width: 260px;
-    }
+    .price-board-wrapper { flex: 1 1 68%; min-width: 320px; }
+    .chart-wrapper { flex: 1 1 30%; min-width: 260px; }
     .price-board {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-      font-size: 18px;
-      background-color: white;
+      width: 100%; border-collapse: collapse;
+      margin-top: 10px; font-size: 19px; background: white;
     }
     .price-board th {
-      background-color: #d4af37;
-      color: #a60000;
-      padding: 10px;
+      background: #d4af37; color: #a60000;
+      padding: 10px; font-size: 19px;
     }
+    .price-board th:first-child { text-align: left; }
+    .price-board th:nth-child(2), .price-board th:nth-child(3) { text-align: right; }
     .price-board td {
       border-top: 1px solid #e0e0e0;
-      padding: 12px 8px;
-      color: #333;
+      padding: 12px 8px; font-size: 22px;
+      font-weight: bold; text-align: right; color: #333;
     }
     .price-board td:first-child {
-      font-weight: bold;
-      color: #a60000;
+      color: #a60000; text-align: left;
     }
-    .price-board tr:hover {
-      background-color: #fff8e1;
-    }
-    .gold-chart iframe {
-      width: 50%;
-      height: 20px;
-      border: 2px solid #d4af37;
-      border-radius: 8px;
+    .price-board tr:hover { background: #fff8e1; }
+    .tradingview-widget-container iframe {
+      width: 100%; height: 300px;
+      border: 2px solid #d4af37; border-radius: 8px;
     }
     .marquee {
-      background-color: #a60000;
-      overflow: hidden;
-      white-space: nowrap;
-      box-sizing: border-box;
-      position: relative;
-      height: 50px;
+      background: #a60000; color: #fff;
+      font-size: 22px; font-weight: bold;
+      line-height: 50px; white-space: nowrap;
+      overflow: hidden; height: 50px;
     }
     .marquee-text {
       display: inline-block;
       padding-left: 100%;
-      animation: marquee 12s linear infinite;
-      color: #fff;
-      font-size: 22px;
-      font-weight: bold;
-      line-height: 50px;
+      animation: marquee 20s linear infinite;
     }
     @keyframes marquee {
       0% { transform: translateX(0%); }
       100% { transform: translateX(-100%); }
     }
     .footer {
-      background-color: #a60000;
-      color: white;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: flex-start;
-      padding: 20px 40px;
+      background: #a60000; color: white;
+      display: flex; flex-wrap: wrap;
+      justify-content: space-between; padding: 10px 20px; align-items: center;
     }
-    .footer img.logo {
-      height: 120px;
-    }
-    .footer-left, .footer-right {
-      flex: 1 1 45%;
-    }
-    .footer-right {
-      text-align: right;
-    }
+    .footer img.logo { height: 80px; }
+    .footer-left, .footer-right { flex: 1 1 45%; }
+    .footer-right { text-align: right; font-size: 14px; line-height: 1.5; }
     .social-icons img {
+      width: 32px; margin: 0 5px;
       border: 2px solid #d4af37;
-      border-radius: 50%;
-      padding: 5px;
-      transition: transform 0.3s ease;
-      width: 32px;
-      margin: 0 5px;
+      border-radius: 50%; padding: 5px;
+      transition: transform 0.3s;
     }
-    .social-icons img:hover {
-      transform: scale(1.2);
-    }
+    .social-icons img:hover { transform: scale(1.2); }
     @media (max-width: 768px) {
-      .main-section {
-        flex-direction: column;
+      .main-section, .footer {
+        flex-direction: column; text-align: center;
       }
-      .footer {
-        flex-direction: column;
-        text-align: center;
-      }
-      .footer-right {
-        margin-top: 20px;
-        text-align: center;
-      }
+      .footer-right { margin-top: 20px; }
     }
   </style>
 </head>
@@ -173,46 +101,33 @@
     <div class="left-info">
       <span>Cập nhật lúc: <strong id="datetime">--:--:--</strong></span>
     </div>
-    <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
-        <iframe src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3726.6497858993093!2d106.33112537525379!3d20.926405080697457!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMjDCsDU1JzM1LjEiTiAxMDbCsDIwJzAxLjMiRQ!5e0!3m2!1svi!2s!4v1746075820183!5m2!1svi!2s" width="200" height="80" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-        <div><span style='font-weight:bold;'>📍 282 Đường Thanh Niên, TP Hải Dương</span></div> 
-</div>
+    <div class="middle-widget">
+      <iframe src="https://www.tradingview-widget.com/embed-widget/single-quote/?locale=vi_VN#%7B%22symbol%22%3A%22PEPPERSTONE%3AXAUUSD%22%2C%22width%22%3A300%2C%22height%22%3A126%2C%22isTransparent%22%3Atrue%2C%22colorTheme%22%3A%22light%22%2C%22utm_source%22%3A%22sjc.com.vn%22%2C%22utm_medium%22%3A%22widget%22%2C%22utm_campaign%22%3A%22single-quote%22%2C%22page-uri%22%3A%22sjc.com.vn%2Fgia-vang-online%3Fgidzl%3DMJkg3KJxOoPS9we8G-5c9baWfmjSvcicG72W2bcoRof38Qy72-fWVHSh-G1Uxp1y4Iof0p0hylWPGFvd90%22%7D"
+        width="300" height="126" frameborder="0" allowtransparency="true" scrolling="no"></iframe>
+    </div>
+    <div class="right-map">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3726.6445774993094!2d106.33093907519567!3d20.926614491279267!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31359b3ab14a7e07%3A0x5025a3b290c0326b!2zMjgyIFRoYW5oIE5pw6puLCBQLiBI4bqjaSBUw6JuLCBI4bqjaSBExrDGoW5nLCAwMzAwMCwgVmnhu4d0IE5hbQ!5e0!3m2!1svi!2s!4v1746097294424!5m2!1svi!2s"
+        width="180" height="90" style="border:0;" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      <strong style="margin-top: 4px; font-size: 14px; white-space: nowrap;">📍 282 Đường Thanh Niên, TP Hải Dương</strong>
+    </div>
   </div>
   <div class="info-top">
     <div><strong>Đơn vị tính:</strong> Nghìn VNĐ/Chỉ</div>
-    <div id="datetime2">--:--:--</div>
   </div>
   <div class="main-section">
     <div class="price-board-wrapper">
       <table class="price-board">
         <thead>
-          <tr>
-            <th>LOẠI VÀNG</th>
-            <th>MUA VÀO</th>
-            <th>BÁN RA</th>
-          </tr>
+          <tr><th>LOẠI VÀNG</th><th>MUA VÀO</th><th>BÁN RA</th></tr>
         </thead>
         <tbody id="price-table-body"></tbody>
       </table>
     </div>
     <div class="chart-wrapper">
       <h3 style="text-align:center;color:#a60000;">Biểu đồ giá vàng thế giới</h3>
-      <div class="gold-chart">
-        <div class="tradingview-widget-container">
-          <div id="tradingview_gold_chart"></div>
-          <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
-          {
-            "symbol": "OANDA:XAUUSD",
-            "width": "100%",
-            "height": "300",
-            "locale": "vi_VN",
-            "dateRange": "1M",
-            "colorTheme": "light",
-            "isTransparent": false,
-            "autosize": true
-          }
-          </script>
-        </div>
+      <div class="tradingview-widget-container">
+        <iframe src="https://vn.tradingview.com/widgetembed/?symbol=XAUUSD&interval=1&theme=light" frameborder="0" allowtransparency="true" scrolling="no"></iframe>
       </div>
     </div>
   </div>
@@ -221,25 +136,18 @@
   </div>
   <div class="footer">
     <div class="footer-left">
-      <img src="https://i.imgur.com/NiE3vWJ.jpeg" alt="logo" class="logo"><br><br>
+      <img src="https://i.imgur.com/NiE3vWJ.jpeg" alt="logo" class="logo">
     </div>
     <div class="footer-right">
-      <p><strong>Về Chúng tôi</strong><br>
+      <p style="margin: 0;"><strong>Về Chúng tôi</strong><br>
         Doanh nghiệp tư nhân vàng bạc Kim Thúy - Hải Dương<br>
         282 Đường Thanh Niên – TP Hải Dương<br>
-        Hotline: 0962 112 555
-      </p>
-      <p><strong>Hãy Kết nối với chúng tôi</strong><br>
+        Hotline: 0962 112 555</p>
+      <p style="margin: 8px 0 0 0;"><strong>Kết nối với chúng tôi</strong><br>
         <span class="social-icons">
-          <a href="https://www.facebook.com/kimthuygold" target="_blank">
-            <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook">
-          </a>
-          <a href="https://www.tiktok.com/@kimthuygold" target="_blank">
-            <img src="https://giabac.vn/Content/ProductPrice/images/icon/tiktok.png" alt="TikTok">
-          </a>
-          <a href="https://zalo.me/0962112555" target="_blank">
-            <img src="https://giabac.vn/Content/ProductPrice/images/icon/zalo.png" alt="Zalo">
-          </a>
+          <a href="https://www.facebook.com/kimthuygold" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook"></a>
+          <a href="https://www.tiktok.com/@kimthuygold" target="_blank"><img src="https://giabac.vn/Content/ProductPrice/images/icon/tiktok.png" alt="TikTok"></a>
+          <a href="https://zalo.me/0962112555" target="_blank"><img src="https://giabac.vn/Content/ProductPrice/images/icon/zalo.png" alt="Zalo"></a>
         </span>
       </p>
     </div>
@@ -250,7 +158,6 @@
       const time = now.toLocaleTimeString('vi-VN');
       const date = now.toLocaleDateString('vi-VN');
       document.getElementById("datetime").innerText = `${time} ${date}`;
-      document.getElementById("datetime2").innerText = `${date} ${time}`;
     }
     setInterval(updateTime, 1000);
     updateTime();
